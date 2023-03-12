@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
 class PathPainter extends CustomPainter {
+  PathPainter(BuildContext context) {
+    color = Theme.of(context).colorScheme.secondaryContainer.withAlpha(128);
+  }
+
+  late Color color;
+
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
-    paint.color = const Color(0x4441B241);
+    paint.color = color;
     paint.style = PaintingStyle.fill;
     var path = Path();
     path.moveTo(0, size.height * 0.5);
