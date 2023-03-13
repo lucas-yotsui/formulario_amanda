@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "83217195351",
+    "project_id": "locacao-salas",
+    "storage_bucket": "locacao-salas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83217195351:android:300c6118406e67d4b31e12",
+        "android_client_info": {
+          "package_name": "com.example.formulario_amanda"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "83217195351-gkc030hgl7c8ju1vgtk8ccn9ssivb4hq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMwuY0WnyS3YbAM0bfMsi_0xblIEIBLfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "83217195351-gkc030hgl7c8ju1vgtk8ccn9ssivb4hq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
