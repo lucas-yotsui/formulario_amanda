@@ -29,20 +29,23 @@ class _MyAppState extends State<MyApp> {
             setState(() => _currentPage = index);
             _controller.jumpToPage(index);
           },
-          destinations: const [
+          destinations: [
             NavigationDestination(
-              selectedIcon: Icon(Icons.person),
-              icon: Icon(Icons.person_outline),
+              selectedIcon:
+                  Icon(Icons.person, color: myLightTheme.primaryColor),
+              icon: const Icon(Icons.person_outline),
               label: 'Meu Perfil',
             ),
             NavigationDestination(
-              selectedIcon: Icon(Icons.add_circle),
-              icon: Icon(Icons.add_circle_outline),
+              selectedIcon:
+                  Icon(Icons.add_circle, color: myLightTheme.primaryColor),
+              icon: const Icon(Icons.add_circle_outline),
               label: 'Nova Reserva',
             ),
             NavigationDestination(
-              selectedIcon: Icon(Icons.calendar_month),
-              icon: Icon(Icons.calendar_month_outlined),
+              selectedIcon:
+                  Icon(Icons.calendar_month, color: myLightTheme.primaryColor),
+              icon: const Icon(Icons.calendar_month_outlined),
               label: 'Minhas Reservas',
             ),
           ],

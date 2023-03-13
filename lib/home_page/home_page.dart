@@ -309,7 +309,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 Image.asset(
                                   'assets/sucesso.gif',
-                                  scale: 1.2,
+                                  scale: 1.3,
                                 ),
                               ],
                             ),

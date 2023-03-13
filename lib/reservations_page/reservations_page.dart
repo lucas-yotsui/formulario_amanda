@@ -83,6 +83,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
         fim: element['fim']!,
         sala: element['sala']!,
         posicaoNaLista: i++,
+        updateParentMethod: setState,
       ));
     }
   }
@@ -95,6 +96,7 @@ class ReservationBlock extends StatelessWidget {
     required this.fim,
     required this.sala,
     required this.posicaoNaLista,
+    required this.updateParentMethod,
     super.key,
   });
 
@@ -103,6 +105,7 @@ class ReservationBlock extends StatelessWidget {
   final String fim;
   final String sala;
   final int posicaoNaLista;
+  final Function updateParentMethod;
 
   @override
   Widget build(BuildContext context) {
@@ -257,7 +260,9 @@ class ReservationBlock extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         child: const Row(
                           children: [
                             Icon(Icons.cancel),
@@ -279,44 +284,72 @@ class ReservationBlock extends StatelessWidget {
                         onPressed: () {
                           currentReservations.removeAt(posicaoNaLista);
                           showModalBottomSheet(
-                              context: context,
-                              builder: (_) => Padding(
-                                    padding: const EdgeInsets.all(32.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                            isDismissible: false,
+                            context: context,
+                            builder: (_) => Padding(
+                              padding: const EdgeInsets.all(32.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'A reserva foi excluída com sucesso!',
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  const Text(
+                                    'Um email foi enviado para o endereço cadastrado confirmando esta operação.',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  Image.asset(
+                                    'assets/cancelado.gif',
+                                    scale: 2,
+                                  ),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                      updateParentMethod(() {});
+                                    },
+                                    child: const Row(
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Text(
-                                          'A reserva foi excluída com sucesso!',
-                                          style: TextStyle(
-                                            fontSize: 25,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          textAlign: TextAlign.center,
+                                        Icon(Icons.cancel),
+                                        SizedBox(
+                                          width: 10,
                                         ),
-                                        const SizedBox(
-                                          height: 30,
-                                        ),
-                                        const Text(
-                                          'Um email foi enviado para o endereço cadastrado confirmando esta operação.',
+                                        Text(
+                                          'Voltar',
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 18,
                                             fontFamily: 'Montserrat',
                                             fontWeight: FontWeight.w600,
                                           ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        const SizedBox(
-                                          height: 30,
-                                        ),
-                                        Image.asset(
-                                          'assets/cancelado.gif',
-                                          scale: 2,
                                         ),
                                       ],
                                     ),
-                                  ));
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
                         },
                         child: const Row(
                           children: [

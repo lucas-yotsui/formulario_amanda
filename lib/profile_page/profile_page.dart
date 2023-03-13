@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formulario_reservas/shared/profile.dart';
 import '../shared/background_decoration.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -10,6 +11,17 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _whatsappController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    _nameController.text = myProfile['nome'] ?? '';
+    _whatsappController.text = myProfile['whatsapp'] ?? '';
+    _emailController.text = myProfile['email'] ?? '';
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 TextFormField(
+                  controller: _nameController,
                   keyboardType: TextInputType.name,
                   validator: (value) {
                     return (value == null ||
@@ -69,6 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 TextFormField(
+                  controller: _whatsappController,
                   keyboardType: TextInputType.phone,
                   validator: (value) {
                     return (value == null ||
@@ -99,6 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 TextFormField(
+                  controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     return (value == null ||
@@ -123,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         width: 2.0,
                       ),
                     ),
-                    labelText: 'Email para contato',
+                    labelText: 'Email de contato',
                     filled: true,
                   ),
                 ),
@@ -137,6 +152,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   onPressed: () {
                     if (_formKey.currentState != null &&
                         _formKey.currentState!.validate()) {
+                      myProfile['nome'] = _nameController.text;
+                      myProfile['whatsapp'] = _whatsappController.text;
+                      myProfile['email'] = _emailController.text;
                       showModalBottomSheet(
                         context: context,
                         builder: (_) {
