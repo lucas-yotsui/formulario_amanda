@@ -12,7 +12,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  int currentPage = 1;
+  int _currentPage = 1;
+  final PageController _controller = PageController(initialPage: 1);
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +22,13 @@ class _MyAppState extends State<MyApp> {
       theme: myLightTheme,
       themeMode: ThemeMode.light,
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         bottomNavigationBar: NavigationBar(
-          selectedIndex: currentPage,
-          onDestinationSelected: (int index) =>
-              setState(() => currentPage = index),
+          selectedIndex: _currentPage,
+          onDestinationSelected: (int index) {
+            setState(() => _currentPage = index);
+            _controller.jumpToPage(index);
+          },
           destinations: const [
             NavigationDestination(
               selectedIcon: Icon(Icons.person),
@@ -43,7 +47,11 @@ class _MyAppState extends State<MyApp> {
             ),
           ],
         ),
-        body: pages[currentPage],
+        body: PageView(
+          controller: _controller,
+          onPageChanged: (index) => setState(() => _currentPage = index),
+          children: pages,
+        ),
       ),
     );
   }

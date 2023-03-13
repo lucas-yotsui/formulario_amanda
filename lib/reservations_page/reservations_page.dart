@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:formulario_reservas/shared/reservations.dart';
 import '../shared/background_decoration.dart';
 
-class ReservationsPage extends StatelessWidget {
+class ReservationsPage extends StatefulWidget {
   const ReservationsPage({super.key});
+
+  @override
+  State<ReservationsPage> createState() => _ReservationsPageState();
+}
+
+class _ReservationsPageState extends State<ReservationsPage> {
+  List<Widget> listOfReservations = [];
 
   @override
   Widget build(BuildContext context) {
@@ -15,59 +23,68 @@ class ReservationsPage extends StatelessWidget {
             painter: PathPainter(context),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.all(8.0),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 80,
-                  ),
-                  Text(
-                    'Minhas Reservas',
-                    style: TextStyle(
-                      fontSize: 36,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ReservationBlock(
-                    data: '09/03',
-                    inicio: '09:30',
-                    fim: '11:30',
-                    sala: 'Sala Maior',
-                  ),
-                  ReservationBlock(
-                    data: '10/03',
-                    inicio: '14:30',
-                    fim: '16:30',
-                    sala: 'Suíte',
-                  ),
-                  ReservationBlock(
-                    data: '10/03',
-                    inicio: '17:30',
-                    fim: '20:00',
-                    sala: 'Suíte',
-                  ),
-                  ReservationBlock(
-                    data: '11/03',
-                    inicio: '10:30',
-                    fim: '12:00',
-                    sala: 'Sala Maior',
-                  ),
-                ],
+                children: listOfReservations,
               ),
             ),
           ),
         ),
       ],
     );
+  }
+
+  @override
+  void initState() {
+    createListOfReservations();
+    super.initState();
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    createListOfReservations();
+    super.setState(fn);
+  }
+
+  void createListOfReservations() {
+    listOfReservations.clear();
+
+    listOfReservations.add(
+      const SizedBox(
+        height: 80,
+      ),
+    );
+    listOfReservations.add(
+      const Text(
+        'Minhas Reservas',
+        style: TextStyle(
+          fontSize: 36,
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+    listOfReservations.add(
+      const SizedBox(
+        height: 20,
+      ),
+    );
+
+    int i = 0;
+    for (var element in currentReservations) {
+      listOfReservations.add(ReservationBlock(
+        data: element['data']!,
+        inicio: element['inicio']!,
+        fim: element['fim']!,
+        sala: element['sala']!,
+        posicaoNaLista: i++,
+      ));
+    }
   }
 }
 
@@ -77,6 +94,7 @@ class ReservationBlock extends StatelessWidget {
     required this.inicio,
     required this.fim,
     required this.sala,
+    required this.posicaoNaLista,
     super.key,
   });
 
@@ -84,6 +102,7 @@ class ReservationBlock extends StatelessWidget {
   final String inicio;
   final String fim;
   final String sala;
+  final int posicaoNaLista;
 
   @override
   Widget build(BuildContext context) {
@@ -216,7 +235,7 @@ class ReservationBlock extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 25,
                       fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -257,7 +276,48 @@ class ReservationBlock extends StatelessWidget {
                         ),
                       ),
                       FilledButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          currentReservations.removeAt(posicaoNaLista);
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (_) => Padding(
+                                    padding: const EdgeInsets.all(32.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Text(
+                                          'A reserva foi excluída com sucesso!',
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const SizedBox(
+                                          height: 30,
+                                        ),
+                                        const Text(
+                                          'Um email foi enviado para o endereço cadastrado confirmando esta operação.',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const SizedBox(
+                                          height: 30,
+                                        ),
+                                        Image.asset(
+                                          'assets/cancelado.gif',
+                                          scale: 2,
+                                        ),
+                                      ],
+                                    ),
+                                  ));
+                        },
                         child: const Row(
                           children: [
                             Icon(Icons.delete),

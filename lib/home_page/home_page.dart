@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formulario_reservas/shared/reservations.dart';
 import 'package:intl/intl.dart';
 import '../shared/background_decoration.dart';
 
@@ -29,6 +30,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _dateInput.text = '';
+    _startTimeInput.text = '';
+    _endTimeInput.text = '';
     super.initState();
   }
 
@@ -63,6 +66,12 @@ class _HomePageState extends State<HomePage> {
                 ),
                 TextFormField(
                   controller: _dateInput,
+                  validator: (value) {
+                    return (value == null || value.isEmpty)
+                        ? 'Por favor escolha uma data para sua reserva.'
+                        : null;
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15.0),
@@ -101,6 +110,12 @@ class _HomePageState extends State<HomePage> {
                 ),
                 TextFormField(
                   controller: _startTimeInput,
+                  validator: (value) {
+                    return (value == null || value.isEmpty)
+                        ? 'Por favor escolha um horário inicial para sua reserva.'
+                        : null;
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15.0),
@@ -146,6 +161,12 @@ class _HomePageState extends State<HomePage> {
                 ),
                 TextFormField(
                   controller: _endTimeInput,
+                  validator: (value) {
+                    return (value == null || value.isEmpty)
+                        ? 'Por favor escolha um horário final para sua reserva.'
+                        : null;
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15.0),
@@ -197,6 +218,12 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
                 DropdownButtonFormField(
+                  validator: (value) {
+                    return (value == null || value.isEmpty)
+                        ? 'Por favor escolha uma sala para sua reserva.'
+                        : null;
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15.0),
@@ -228,7 +255,90 @@ class _HomePageState extends State<HomePage> {
                       setState(() => _currentlySelectedRoom = selectedRoom!),
                   value: _currentlySelectedRoom,
                   isExpanded: false,
-                )
+                ),
+                FilledButton(
+                  onPressed: () {
+                    if (_formKey.currentState != null &&
+                        _formKey.currentState!.validate()) {
+                      currentReservations.add({
+                        'data': _dateInput.text,
+                        'inicio': _startTimeInput.text,
+                        'fim': _endTimeInput.text,
+                        'sala': _currentlySelectedRoom!.split(' - ')[0],
+                      });
+
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (_) {
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.6,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.0),
+                                  child: Text(
+                                    'Sua reserva foi enviada com sucesso!',
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                const Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.0),
+                                  child: Text(
+                                    'Um email foi enviado para o endereço cadastrado confirmando esta operação.',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: 'Montserrat',
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Image.asset(
+                                  'assets/sucesso.gif',
+                                  scale: 1.2,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.send),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          'Enviar',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
